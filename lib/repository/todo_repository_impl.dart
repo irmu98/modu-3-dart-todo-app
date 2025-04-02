@@ -1,6 +1,6 @@
-import 'package:todo_app/data_source/todo_data_source.dart';
-import 'package:todo_app/model/todo.dart';
-import 'package:todo_app/repository/todo_repository.dart';
+import '../data_source/todo_data_source.dart';
+import '../model/todo.dart';
+import 'todo_repository.dart';
 
 class TodoRepositoryImpl implements TodoRepository {
   final TodoDataSource _dataSource;

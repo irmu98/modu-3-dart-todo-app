@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:todo_app/data_source/todo_data_source.dart';
+import 'todo_data_source.dart';
 
 class TodoDataSourceImpl implements TodoDataSource {
   final String path = 'lib/data/todos.json';
