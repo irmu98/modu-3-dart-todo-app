@@ -27,7 +27,7 @@ void showMenu() {
 void main() async {
   writeLogs('앱 시작됨.');
   TodoDataSource mockTodoDataSource = TodoDataSourceImpl(
-    path: 'lib/data/todos.json',
+    path: 'lib/data/mock_todos.json',
   );
   TodoRepository todoRepository = TodoRepositoryImpl(
     dataSource: mockTodoDataSource,
@@ -101,10 +101,24 @@ void main() async {
       }
       
     } else if (num == '0') {
-      print('[프로그램을 종료합니다. 데이터가 저장되었습니다.]');
-      writeLogs('앱 종료됨.');
+      List<Todo> todos = await todoRepository.getTodos();
+      print('[할 일 목록]');
+      for (final todo in todos) {
+        print(
+          '${todo.id}. [${todo.completed == true ? 'X' : ''}] ${todo.title} (${todo.createdAt.toIso8601String().split('.').first}Z)',
+        );
+      }
+      print('종료전 마지막 수정사항을 저장하시겠습니까? (y/n)');
+      String? answer = stdin.readLineSync();
 
-      break;
+      if(answer == 'y') {
+        await mockTodoDataSource.writeTodos(todos.map((e) => e.toJson()).toList());
+
+        print('[프로그램을 종료합니다. 데이터가 저장되었습니다.]');
+        writeLogs('앱 종료됨.');
+
+        break;
+      }
     }
   }
 }

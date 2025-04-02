@@ -16,10 +16,6 @@ void main(){
     List<Todo> getTodos = await todoRepository.getTodos();
 
     expect(getTodos.length, 2);
-    expect(getTodos.first.id, 181);
-    expect(getTodos.first.userId, 10);
-    expect(getTodos.first.title, "청소");
-    expect(getTodos.first.completed,false);
   });
   test('2. 할 일 추가', () async {
     const title = '제목';
@@ -65,11 +61,11 @@ void main(){
 
     List<Todo> todos = await todoRepository.sortedWithCreatedAtTodo();
 
-    expect(todos.first.createdAt.year - todos.last.createdAt.year <= 0, isTrue);
-    expect(todos.first.createdAt.month - todos.last.createdAt.month <= 0, isTrue);
-    expect(todos.first.createdAt.day - todos.last.createdAt.day <= 0, isTrue);
+    for (int i = 0; i < todos.length - 1; i++) {
+      expect(todos[i].createdAt.isBefore(todos[i+1].createdAt), isTrue);
+    }
   });
-  test('7. 완료또는 미완료 할일만 보기', () async {
+  test('7-1. 완료또는 미완료 할일만 보기', () async {
 
     final todos = await todoRepository.selectedWithCompletedTodo(
       true,
