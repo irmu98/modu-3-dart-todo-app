@@ -6,4 +6,6 @@ abstract interface class TodoRepository {
   Future<void> updateTodo(int id, String newTitle);
   Future<void> toggleTodo(int id);
   Future<void> deleteTodo(int id);
+  Future<List<Todo>> sortedWithCreatedAtTodo();
+  Future<List<Todo>> selectedWithCompletedTodo(bool completed);
 }

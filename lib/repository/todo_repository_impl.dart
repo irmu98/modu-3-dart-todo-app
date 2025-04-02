@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
+
 import '../data_source/todo_data_source.dart';
 import '../logs/logs.dart';
 import '../model/todo.dart';
@@ -55,7 +57,10 @@ class TodoRepositoryImpl implements TodoRepository {
       final List<Map<String, dynamic>> todosJson =
           await _dataSource.readTodos();
 
-      return todosJson.map((e) => Todo.fromJson(e)).toList();
+      return todosJson
+          .map((e) => Todo.fromJson(e))
+          .toList()
+          .sorted((a, b) => a.id.compareTo(b.id));
     } catch (e) {
       throw Exception(e);
     }
@@ -96,6 +101,32 @@ class TodoRepositoryImpl implements TodoRepository {
         }).toList(),
       );
       writeLogs('할 일 제목 수정 - ID: $id, 새로운 제목: $newTitle');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<List<Todo>> selectedWithCompletedTodo(bool completed) async {
+    try {
+      List<Todo> todoList = await getTodos();
+
+      // writeLogs('Completed가 ${completed}인 할일 목록: ');
+      writeLogs('Completed가 ${completed}인 할일 목록을 불러왔습니다.');
+      return todoList.where((element) => element.completed == completed,).toList();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<List<Todo>> sortedWithCreatedAtTodo() async {
+    try {
+      List<Todo> todoList = await getTodos();
+
+      
+      writeLogs('생성일순으로 정렬했습니다.');
+      return todoList.sorted((a, b) => a.createdAt.compareTo(b.createdAt));
     } catch (e) {
       throw Exception(e);
     }

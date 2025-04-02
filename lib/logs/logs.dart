@@ -1,9 +1,11 @@
-
 import 'dart:io';
 
 Future<void> writeLogs(String message) async {
-  File file = File('log.txt');
-  file.writeAsString(message, mode: FileMode.append);
+  File file = File('lib/logs/log.txt');
+  file.writeAsString(
+    "[${DateTime.now().toIso8601String().split('.').first}Z] $message\n",
+    mode: FileMode.append,
+  );
 
-  print("[${DateTime.now()}] $message");
+  print("[${DateTime.now().toIso8601String().split('.').first}Z] $message");
 }

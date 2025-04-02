@@ -36,7 +36,7 @@ class Todo {
       'id': id,
       'title': title,
       'completed': completed,
-      'createdAt': createdAt.toString(),
+      'createdAt': '${createdAt.toIso8601String().split('.').first}Z',
     };
   }
 

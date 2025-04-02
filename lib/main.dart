@@ -15,6 +15,8 @@ void showMenu() {
     3. 할 일 수정
     4. 완료 상태 토글
     5. 할 일 삭제
+    6. 생성일순 정렬
+    7. 완료또는 미완료 할일만 보기
     0. 종료
     --------------------------
     """);
@@ -39,10 +41,9 @@ void main() async {
       print('[할 일 목록]');
       for (final todo in todos) {
         print(
-          '${todo.id}. [${todo.completed == true ? 'X' : ''}] ${todo.title} (${todo.createdAt})',
+          '${todo.id}. [${todo.completed == true ? 'X' : ''}] ${todo.title} (${todo.createdAt.toIso8601String().split('.').first}Z)',
         );
       }
-      writeLogs('');
     } else if (num == '2') {
       print('할 일 제목을 입력하세요: ');
       String? title = stdin.readLineSync();
@@ -51,7 +52,6 @@ void main() async {
         await todoRepository.addTodo(title);
         print('[할 일 추가됨]');
       }
-      
     } else if (num == '3') {
       print('수정할 할 일 ID를 입력하세요: ');
       String? id = stdin.readLineSync();
@@ -61,7 +61,6 @@ void main() async {
         await todoRepository.updateTodo(int.parse(id), title);
         print('[할 일 제목이 수정되었습니다]');
       }
-      
     } else if (num == '4') {
       print('완료 상태를 토글할 할 일 ID를 입력하세요: ');
       String? id = stdin.readLineSync();
@@ -69,7 +68,6 @@ void main() async {
         await todoRepository.toggleTodo(int.parse(id));
         print('[할 일 완료 상태가 변경되었습니다]');
       }
-      
     } else if (num == '5') {
       print('삭제할 할 일 ID를 입력하세요: ');
       String? id = stdin.readLineSync();
@@ -77,11 +75,35 @@ void main() async {
         await todoRepository.deleteTodo(int.parse(id));
         print('[할 일이 삭제되었습니다]');
       }
+    } else if (num == '6') {
+      final todos = await todoRepository.sortedWithCreatedAtTodo();
+      print('[정렬된 할 일 목록]');
+      for (final todo in todos) {
+        print(
+          '${todo.id}. [${todo.completed == true ? 'X' : ''}] ${todo.title} (${todo.createdAt.toIso8601String().split('.').first}Z)',
+        );
+      }
+    } else if (num == '7') {
+      print('완료된 리스트 : true, 완료 안된 리스트 : false를 입력하세요: ');
+      String? completed = stdin.readLineSync();
+      if (completed != null) {
+        final todos = await todoRepository.selectedWithCompletedTodo(
+          bool.parse(completed),
+        );
+        print('[정렬된 할 일 목록]');
+        for (final todo in todos) {
+          print(
+            '${todo.id}. [${todo.completed == true ? 'X' : ''}] ${todo.title} (${todo.createdAt.toIso8601String().split('.').first}Z)',
+          );
+        }
+      } else {
+        throw Exception('true, false 중 입력해주세요');
+      }
       
     } else if (num == '0') {
       print('[프로그램을 종료합니다. 데이터가 저장되었습니다.]');
       writeLogs('앱 종료됨.');
-      
+
       break;
     }
   }
