@@ -11,7 +11,12 @@ class TodoDataSourceImpl implements TodoDataSource {
 
   @override
   Future<List<Map<String, dynamic>>> readTodos() async {
-    final String jsonString = await File(path).readAsString();
+    String? jsonString = await File(path).readAsString();
+
+    if (jsonString == '') {
+      jsonString = await File('lib/data/mock_todos.json').readAsString();
+    }
+
     final List jsonList = jsonDecode(jsonString);
     final List<Map<String, dynamic>> todos = List<Map<String, dynamic>>.from(
       jsonList,

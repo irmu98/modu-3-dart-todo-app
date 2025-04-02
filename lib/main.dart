@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:todo_app/logs/logs.dart';
-
 import 'data_source/todo_data_source.dart';
 import 'data_source/todo_data_source_impl.dart';
+import 'logs/logs.dart';
 import 'model/todo.dart';
 import 'repository/todo_repository.dart';
 import 'repository/todo_repository_impl.dart';
@@ -26,7 +25,7 @@ void showMenu() {
 void main() async {
   writeLogs('앱 시작됨.');
   TodoDataSource mockTodoDataSource = TodoDataSourceImpl(
-    path: 'lib/data/mock_todos.json',
+    path: 'lib/data/todos.json',
   );
   TodoRepository todoRepository = TodoRepositoryImpl(
     dataSource: mockTodoDataSource,
