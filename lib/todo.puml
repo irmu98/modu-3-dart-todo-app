@@ -15,16 +15,16 @@ class Todo {
 }
 
 interface TodoDataSource {
-    +Future<List<Map<String, dynamic>>> readTodos()
-    +Future<void> writeTodos(List<Map<String, dynamic>> todos)
+    {abstract} +Future<List<Map<String, dynamic>>> readTodos()
+    {abstract} +Future<void> writeTodos(List<Map<String, dynamic>> todos)
 }
 
 interface TodoRepository {
-    +Future<List<Todo>> getTodos()
-    +Future<void> addTodo(String title)
-    +Future<void> updateTodo(int id, String newTitle)
-    +Future<void> toggleTodo(int id)
-    +Future<void> deleteTodo(int id)
+    {abstract} +Future<List<Todo>> getTodos()
+    {abstract} +Future<void> addTodo(String title)
+    {abstract} +Future<void> updateTodo(int id, String newTitle)
+    {abstract} +Future<void> toggleTodo(int id)
+    {abstract} +Future<void> deleteTodo(int id)
 }
 
 class TodoDataSourceImpl implements TodoDataSource {
