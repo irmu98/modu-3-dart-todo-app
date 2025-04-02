@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:todo_app/data_source/todo_data_source.dart';
-import 'package:todo_app/data_source/todo_data_source_impl.dart';
-import 'package:todo_app/repository/todo_repository.dart';
-import 'package:todo_app/repository/todo_repository_impl.dart';
-
+import 'data_source/todo_data_source.dart';
+import 'data_source/todo_data_source_impl.dart';
 import 'model/todo.dart';
+import 'repository/todo_repository.dart';
+import 'repository/todo_repository_impl.dart';
 
 void showMenu() {
   print("""
@@ -24,7 +23,7 @@ void showMenu() {
 
 void main() async {
   TodoDataSource mockTodoDataSource = TodoDataSourceImpl(
-    path: 'lib/data/todos.json',
+    path: 'lib/data/mock_todos.json',
   );
   TodoRepository todoRepository = TodoRepositoryImpl(
     dataSource: mockTodoDataSource,
@@ -33,13 +32,12 @@ void main() async {
   while (true) {
     showMenu();
     String? num = stdin.readLineSync();
-    print(num);
     if (num == '1') {
-      // List<Todo> todos = await todoRepository.getTodos();
-      // print('[할 일 목록]');
-      // for (final todo in todos) {
-      //   print('${todo.id}. [${todo.completed == true ? 'X' : ''}] ${todo.title} (${todo.createdAt})');
-      // }
+      List<Todo> todos = await todoRepository.getTodos();
+      print('[할 일 목록]');
+      for (final todo in todos) {
+        print('${todo.id}. [${todo.completed == true ? 'X' : ''}] ${todo.title} (${todo.createdAt})');
+      }
     } else if (num == '2') {
     } else if (num == '3') {
     } else if (num == '4') {

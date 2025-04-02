@@ -44,11 +44,11 @@ class Todo {
 
   factory Todo.fromJson(Map<String, dynamic> map) {
     return Todo(
-      userId: map['userId']?.toInt() ?? 0,
-      id: map['id']?.toInt() ?? 0,
+      userId: map['userId'] as int? ?? 0,
+      id: map['id'] as int? ?? 0,
       title: map['title'] ?? '',
       completed: map['completed'] ?? false,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      createdAt: DateTime.parse(map['createdAt']),
     );
   }
 
