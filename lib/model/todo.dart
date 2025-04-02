@@ -6,7 +6,7 @@ class Todo {
   final String title;
   final bool completed;
   final DateTime createdAt;
-  Todo({
+  const Todo({
     required this.userId,
     required this.id,
     required this.title,

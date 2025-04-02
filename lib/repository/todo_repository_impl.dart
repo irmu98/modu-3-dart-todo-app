@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../data_source/todo_data_source.dart';
 import '../model/todo.dart';
 import 'todo_repository.dart';
@@ -9,9 +11,21 @@ class TodoRepositoryImpl implements TodoRepository {
     : _dataSource = dataSource;
 
   @override
-  Future<void> addTodo(String title) {
-    // TODO: implement addTodo
-    throw UnimplementedError();
+  Future<void> addTodo(String title) async {
+    List<Todo> todoList = await getTodos();
+
+    final newTodo = Todo(
+      userId: 1,
+      id: todoList.last.id + 1,
+      title: title,
+      completed: false,
+      createdAt: DateTime.now(),
+    );
+
+    todoList.add(newTodo);
+    
+    await _dataSource.writeTodos(todoList.map((e) => e.toJson()).toList());
+
   }
 
   @override
