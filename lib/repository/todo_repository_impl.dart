@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../data_source/todo_data_source.dart';
+import '../logs/logs.dart';
 import '../model/todo.dart';
 import 'todo_repository.dart';
 
@@ -14,6 +15,7 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<void> addTodo(String title) async {
     try {
       List<Todo> todoList = await getTodos();
+      // print('todoList : $todoList');
 
       final newTodo = Todo(
         userId: 1,
@@ -22,10 +24,12 @@ class TodoRepositoryImpl implements TodoRepository {
         completed: false,
         createdAt: DateTime.now(),
       );
+      // print('newTodo : $newTodo');
 
       todoList.add(newTodo);
 
       await _dataSource.writeTodos(todoList.map((e) => e.toJson()).toList());
+      writeLogs('할 일 추가됨 - ID: ${newTodo.id}, 제목: ${newTodo.title}');
     } catch (e) {
       throw Exception(e);
     }
@@ -39,6 +43,7 @@ class TodoRepositoryImpl implements TodoRepository {
       await _dataSource.writeTodos(
         todoList.where((e) => e.id != id).map((e) => e.toJson()).toList(),
       );
+      writeLogs('할 일 삭제됨 - ID: $id');
     } catch (e) {
       throw Exception(e);
     }
@@ -49,6 +54,7 @@ class TodoRepositoryImpl implements TodoRepository {
     try {
       final List<Map<String, dynamic>> todosJson =
           await _dataSource.readTodos();
+
       return todosJson.map((e) => Todo.fromJson(e)).toList();
     } catch (e) {
       throw Exception(e);
@@ -63,6 +69,9 @@ class TodoRepositoryImpl implements TodoRepository {
       await _dataSource.writeTodos(
         todoList.map((e) {
           if (e.id == id) {
+            writeLogs(
+              '할 일 완료 토글 - ID: $id, 상태: ${e.completed == true ? '취소됨' : '완료됨'}',
+            );
             return e.copyWith(completed: !e.completed).toJson();
           }
           return e.toJson();
@@ -86,6 +95,7 @@ class TodoRepositoryImpl implements TodoRepository {
           return e.toJson();
         }).toList(),
       );
+      writeLogs('할 일 제목 수정 - ID: $id, 새로운 제목: $newTitle');
     } catch (e) {
       throw Exception(e);
     }

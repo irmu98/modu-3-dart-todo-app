@@ -14,8 +14,6 @@ class Todo {
     required this.createdAt,
   });
 
-  
-
   Todo copyWith({
     int? userId,
     int? id,
@@ -38,7 +36,7 @@ class Todo {
       'id': id,
       'title': title,
       'completed': completed,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'createdAt': createdAt.toString(),
     };
   }
 
@@ -60,21 +58,21 @@ class Todo {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Todo &&
-      other.userId == userId &&
-      other.id == id &&
-      other.title == title &&
-      other.completed == completed &&
-      other.createdAt == createdAt;
+        other.userId == userId &&
+        other.id == id &&
+        other.title == title &&
+        other.completed == completed &&
+        other.createdAt == createdAt;
   }
 
   @override
   int get hashCode {
     return userId.hashCode ^
-      id.hashCode ^
-      title.hashCode ^
-      completed.hashCode ^
-      createdAt.hashCode;
+        id.hashCode ^
+        title.hashCode ^
+        completed.hashCode ^
+        createdAt.hashCode;
   }
 }
