@@ -14,7 +14,7 @@ class TodoDataSourceImpl implements TodoDataSource {
     String? jsonString = await File(path).readAsString();
 
     if (jsonString == '') {
-      jsonString = await File('lib/data/mock_todos.json').readAsString();
+      jsonString = await File('lib/data/backup.dat').readAsString();
     }
 
     final List jsonList = jsonDecode(jsonString);
