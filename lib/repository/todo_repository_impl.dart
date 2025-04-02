@@ -5,8 +5,9 @@ import 'todo_repository.dart';
 class TodoRepositoryImpl implements TodoRepository {
   final TodoDataSource _dataSource;
 
-  TodoRepositoryImpl({required TodoDataSource dataSource}) : _dataSource = dataSource;
-  
+  TodoRepositoryImpl({required TodoDataSource dataSource})
+    : _dataSource = dataSource;
+
   @override
   Future<void> addTodo(String title) {
     // TODO: implement addTodo
@@ -20,13 +21,15 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<List<Todo>> getTodos() {
+  Future<List<Todo>> getTodos() async {
     // TODO: implement getTodos]
     try {
-      final List<Map<String, dynamic>> todosJson = await _dataSource.readTodos();
-      return 
+      final List<Map<String, dynamic>> todosJson =
+          await _dataSource.readTodos();
+      return todosJson.map((todo) => Todo.fromJson(todo)).toList();
+    } catch (e) {
+      throw Exception('');
     }
-    throw UnimplementedError();
   }
 
   @override
