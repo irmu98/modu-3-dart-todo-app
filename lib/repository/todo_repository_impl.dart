@@ -21,7 +21,11 @@ class TodoRepositoryImpl implements TodoRepository {
 
   @override
   Future<List<Todo>> getTodos() {
-    // TODO: implement getTodos
+    // TODO: implement getTodos]
+    try {
+      final List<Map<String, dynamic>> todosJson = await _dataSource.readTodos();
+      return 
+    }
     throw UnimplementedError();
   }
 
