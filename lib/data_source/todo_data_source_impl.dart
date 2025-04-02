@@ -17,8 +17,8 @@ class TodoDataSourceImpl implements TodoDataSource {
   }
 
   @override
-  Future<void> writeTodos(List<Map<String, dynamic>> todos) {
-    
-    throw UnimplementedError();
+  Future<void> writeTodos(List<Map<String, dynamic>> todos) async {
+    String json= jsonEncode(todos);
+    await File(path).writeAsString(json);
   }
 }
