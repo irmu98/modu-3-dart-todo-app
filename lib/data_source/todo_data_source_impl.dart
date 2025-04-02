@@ -4,7 +4,10 @@ import 'dart:io';
 import 'todo_data_source.dart';
 
 class TodoDataSourceImpl implements TodoDataSource {
-  final String path = 'lib/data/todos.json';
+  // final String path = 'lib/data/todos.json';
+  final String path;
+
+  TodoDataSourceImpl({required this.path});
 
   @override
   Future<List<Map<String, dynamic>>> readTodos() async {
@@ -18,7 +21,7 @@ class TodoDataSourceImpl implements TodoDataSource {
 
   @override
   Future<void> writeTodos(List<Map<String, dynamic>> todos) async {
-    String json= jsonEncode(todos);
+    String json = jsonEncode(todos);
     await File(path).writeAsString(json);
   }
 }
