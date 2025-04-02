@@ -8,7 +8,7 @@ class TodoRepositoryImpl implements TodoRepository {
   final TodoDataSource _dataSource;
 
   TodoRepositoryImpl({required TodoDataSource dataSource})
-      : _dataSource = dataSource;
+    : _dataSource = dataSource;
 
   @override
   Future<void> addTodo(String title) async {
@@ -25,11 +25,8 @@ class TodoRepositoryImpl implements TodoRepository {
 
       todoList.add(newTodo);
 
-      await _dataSource.writeTodos(
-          todoList
-              .map((e) => e.toJson())
-              .toList());
-    } catch(e) {
+      await _dataSource.writeTodos(todoList.map((e) => e.toJson()).toList());
+    } catch (e) {
       throw Exception(e);
     }
   }
@@ -40,11 +37,9 @@ class TodoRepositoryImpl implements TodoRepository {
       List<Todo> todoList = await getTodos();
 
       await _dataSource.writeTodos(
-          todoList
-              .where((e) => e.id != id)
-              .map((e) => e.toJson())
-              .toList());
-    } catch(e) {
+        todoList.where((e) => e.id != id).map((e) => e.toJson()).toList(),
+      );
+    } catch (e) {
       throw Exception(e);
     }
   }
@@ -53,7 +48,7 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<List<Todo>> getTodos() async {
     try {
       final List<Map<String, dynamic>> todosJson =
-      await _dataSource.readTodos();
+          await _dataSource.readTodos();
       return todosJson.map((e) => Todo.fromJson(e)).toList();
     } catch (e) {
       throw Exception(e);
@@ -65,29 +60,34 @@ class TodoRepositoryImpl implements TodoRepository {
     try {
       List<Todo> todoList = await getTodos();
 
-      List<Todo> sampleList = todoList.where((e) => e.id != id).toList();
-
-      sampleList.add(
-          todoList.where((e) => e.id == id).toList()
-      );
-
       await _dataSource.writeTodos(
-          todoList
-              .map((e) {
-            if (e.id == id) {
-              e.completed = !e.completed;
-            }
-            return e.toJson();
-          })
-              .toList());
-    } catch(e) {
+        todoList.map((e) {
+          if (e.id == id) {
+            return e.copyWith(completed: !e.completed).toJson();
+          }
+          return e.toJson();
+        }).toList(),
+      );
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
-  Future<void> updateTodo(int id, String newTitle) {
-    // TODO: implement updateTodo
-    throw UnimplementedError();
+  Future<void> updateTodo(int id, String newTitle) async {
+    try {
+      List<Todo> todoList = await getTodos();
+
+      await _dataSource.writeTodos(
+        todoList.map((e) {
+          if (e.id == id) {
+            return e.copyWith(title: newTitle).toJson();
+          }
+          return e.toJson();
+        }).toList(),
+      );
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }
